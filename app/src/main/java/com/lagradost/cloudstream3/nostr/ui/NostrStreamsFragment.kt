@@ -60,45 +60,42 @@ class NostrStreamsFragment : Fragment() {
         }
     }
 
-    @Suppress("DEPRECATION")
     private fun playNostrStream(stream: com.lagradost.cloudstream3.nostr.models.Stream) {
         val streamUrl = stream.streamingUrl ?: return
 
-        // Detect stream type from URL
-        val streamType = when {
-            streamUrl.contains(".m3u8") || streamUrl.contains("m3u8") -> ExtractorLinkType.M3U8
-            streamUrl.contains(".mpd") || streamUrl.contains("dash") -> ExtractorLinkType.DASH
-            else -> ExtractorLinkType.M3U8 // Default to M3U8 for live streams
+        lifecycleScope.launch {
+            // Use newExtractorLink which properly handles audio and video
+            val extractorLink = com.lagradost.cloudstream3.utils.newExtractorLink(
+                source = "Nostr",
+                name = stream.title,
+                url = streamUrl,
+                type = com.lagradost.cloudstream3.utils.INFER_TYPE, // Auto-detect M3U8/DASH/VIDEO from URL
+            ) {
+                // Set referer if needed (empty for most Nostr streams)
+                this.referer = ""
+                // Use Unknown quality for live streams
+                this.quality = com.lagradost.cloudstream3.utils.Qualities.Unknown.value
+            }
+
+            // Create a generator with the link
+            val generator = ExtractorLinkGenerator(
+                links = listOf(extractorLink),
+                subtitles = emptyList()
+            )
+
+            // Navigate to the player with Nostr metadata
+            val bundle = GeneratorPlayer.newInstance(generator).apply {
+                putString("nostr_stream_id", stream.id)
+                putString("nostr_author_pubkey", stream.authorPubkey)
+                putString("nostr_stream_title", stream.title)
+                putBoolean("is_nostr_stream", true)
+            }
+
+            activity?.navigate(
+                R.id.global_to_navigation_player,
+                bundle
+            )
         }
-
-        // Create an ExtractorLink for the stream
-        val extractorLink = ExtractorLink(
-            source = "Nostr",
-            name = stream.title,
-            url = streamUrl,
-            referer = "",
-            quality = 1080, // Default quality
-            type = streamType
-        )
-
-        // Create a generator with the link
-        val generator = ExtractorLinkGenerator(
-            links = listOf(extractorLink),
-            subtitles = emptyList()
-        )
-
-        // Navigate to the player with Nostr metadata
-        val bundle = GeneratorPlayer.newInstance(generator).apply {
-            putString("nostr_stream_id", stream.id)
-            putString("nostr_author_pubkey", stream.authorPubkey)
-            putString("nostr_stream_title", stream.title)
-            putBoolean("is_nostr_stream", true)
-        }
-
-        activity?.navigate(
-            R.id.global_to_navigation_player,
-            bundle
-        )
     }
 
     private fun observeViewModel() {
