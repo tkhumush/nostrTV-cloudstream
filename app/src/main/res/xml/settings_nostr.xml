@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Nostr Configuration"
+        android:key="nostr_category">
+
+        <SwitchPreferenceCompat
+            android:key="nostr_enabled"
+            android:title="@string/enable_nostr"
+            android:summary="Enable or disable Nostr integration"
+            android:defaultValue="true" />
+
+        <EditTextPreference
+            android:key="nostr_public_key"
+            android:title="@string/nostr_public_key"
+            android:summary="Your Nostr public identity"
+            android:enabled="false" />
+
+        <EditTextPreference
+            android:key="nostr_relays"
+            android:title="@string/relay_list"
+            android:summary="@string/relay_list_summary"
+            android:dialogTitle="Relay List"
+            android:dialogMessage="Enter relay URLs, one per line" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Identity Management"
+        android:key="identity_category">
+
+        <Preference
+            android:key="reset_keypair"
+            android:title="@string/reset_keypair"
+            android:summary="@string/reset_keypair_summary" />
+
+        <Preference
+            android:key="export_private_key"
+            android:title="Export Private Key"
+            android:summary="Export your private key for backup or transfer" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

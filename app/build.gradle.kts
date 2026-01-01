@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.dokka)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-parcelize")
 }
 
 val javaTarget = JvmTarget.fromTarget(libs.versions.jvmTarget.get())
@@ -155,6 +156,10 @@ android {
     namespace = "com.lagradost.cloudstream3"
 }
 
+configurations.all {
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-android-extensions-runtime")
+}
+
 dependencies {
     // Testing
     testImplementation(libs.junit)
@@ -210,6 +215,10 @@ dependencies {
     implementation(libs.conscrypt.android) // To Fix SSL Fu*kery on Android 9
     implementation(libs.jackson.module.kotlin) // JSON Parser
     implementation(libs.zipline)
+
+    // Nostr - Cryptography
+    implementation("fr.acinq.secp256k1:secp256k1-kmp:0.15.0")
+    implementation("fr.acinq.secp256k1:secp256k1-kmp-jni-android:0.15.0")
 
     // Torrent Support
     implementation(libs.torrentserver)

@@ -363,6 +363,7 @@
     <string name="pref_category_looks">Looks</string>
     <string name="pref_category_ui_features">Features</string>
     <string name="category_general">General</string>
+    <string name="category_nostr">Nostr</string>
     <string name="random_button_settings">Random Button</string>
     <string name="random_button_settings_desc">Show random button on Homepage and Library</string>
     <string name="provider_lang_settings">Extension languages</string>
@@ -754,4 +755,20 @@
     <string name="top_left">Top left</string>
     <string name="top_center">Top center</string>
     <string name="top_right">Top right</string>
+
+    <!-- Nostr -->
+    <string name="nostr_streams">Nostr</string>
+    <string name="nostr_live_streams">Live Nostr Streams</string>
+    <string name="no_live_streams">No live streams at the moment</string>
+    <string name="live">LIVE</string>
+    <string name="stream_thumbnail">Stream thumbnail</string>
+    <string name="live_chat">Live Chat</string>
+    <string name="type_message">Type a message…</string>
+    <string name="send_message">Send message</string>
+    <string name="enable_nostr">Enable Nostr</string>
+    <string name="nostr_public_key">Your Nostr Public Key</string>
+    <string name="relay_list">Relay List</string>
+    <string name="relay_list_summary">Comma-separated relay URLs</string>
+    <string name="reset_keypair">Reset Keypair</string>
+    <string name="reset_keypair_summary">Generate a new Nostr identity (irreversible)</string>
 </resources>

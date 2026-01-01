@@ -76,14 +76,22 @@
                 style="@style/SettingsItem"
 
                 android:nextFocusUp="@id/settings_player"
-                android:nextFocusDown="@id/settings_ui"
+                android:nextFocusDown="@id/settings_nostr"
                 android:text="@string/category_providers" />
+
+            <TextView
+                android:id="@+id/settings_nostr"
+                style="@style/SettingsItem"
+
+                android:nextFocusUp="@id/settings_providers"
+                android:nextFocusDown="@id/settings_ui"
+                android:text="@string/category_nostr" />
 
             <TextView
                 android:id="@+id/settings_ui"
                 style="@style/SettingsItem"
 
-                android:nextFocusUp="@id/settings_providers"
+                android:nextFocusUp="@id/settings_nostr"
                 android:nextFocusDown="@id/settings_updates"
                 android:text="@string/category_ui" />
 

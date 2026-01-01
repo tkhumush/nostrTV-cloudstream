@@ -1195,6 +1195,9 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         updateTv()
 
+        // Initialize Nostr if enabled
+        initializeNostr()
+
         // backup when we update the app, I don't trust myself to not boot lock users, might want to make this a setting?
         safe {
             val appVer = BuildConfig.VERSION_NAME
@@ -2031,6 +2034,20 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
             setNavigationBarColorCompat(R.attr.primaryGrayBackground)
             updateLocale()
             runDefault()
+        }
+    }
+
+    private fun initializeNostr() {
+        try {
+            val enabled = getKey<Boolean>(com.lagradost.cloudstream3.nostr.NostrConstants.NOSTR_ENABLED_KEY)
+                ?: true // Default to enabled
+
+            if (enabled && !com.lagradost.cloudstream3.nostr.crypto.NostrKeyManager.hasKeypair(this)) {
+                com.lagradost.cloudstream3.nostr.crypto.NostrKeyManager.generateAndStoreKeypair(this)
+                Log.i("NostrTV", "Generated Nostr keypair on first launch")
+            }
+        } catch (e: Exception) {
+            Log.e("NostrTV", "Failed to initialize Nostr: ${e.message}", e)
         }
     }
 
